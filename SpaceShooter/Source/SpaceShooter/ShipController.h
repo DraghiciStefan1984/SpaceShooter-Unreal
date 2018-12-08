@@ -3,8 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
-//#include "GameFramework/Pawn.h"
+#include "BulletController.h"
 #include "Runtime/Engine/Classes/GameFramework/DefaultPawn.h"
+#include "Runtime/CoreUObject/Public/Templates/Casts.h"
 #include "ShipController.generated.h"
 
 UCLASS()
@@ -33,8 +34,12 @@ public:
 	UPROPERTY(EditAnywhere)
 	float speed = 10.0f;
 
+	UPROPERTY(EditAnywhere, Category = "Spawning")
+	TSubclassOf<class ABulletController> bullet_BP;
+
 	FVector currentVelocity;
 
 	void MoveX(float axisValue);
 	void MoveY(float axisValue);
+	void OnShoot();
 };

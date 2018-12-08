@@ -3,7 +3,6 @@
 #include "ShipController.h"
 #include "Runtime/Engine/Classes/Components/BoxComponent.h"
 #include "Runtime/Engine/Classes/Components/InputComponent.h"
-
 // Sets default values
 AShipController::AShipController()
 {
@@ -37,6 +36,7 @@ void AShipController::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 	PlayerInputComponent->BindAxis("MoveX", this, &AShipController::MoveX); 
 	PlayerInputComponent->BindAxis("MoveY", this, &AShipController::MoveY);
+	PlayerInputComponent->BindAction("Shoot", IE_Pressed, this, &AShipController::OnShoot);
 }
 
 void AShipController::MoveX(float axisValue)
@@ -46,6 +46,17 @@ void AShipController::MoveX(float axisValue)
 
 void AShipController::MoveY(float axisValue)
 {
-	currentVelocity.X = axisValue * 100.0f;
+	currentVelocity.Y = axisValue * 100.0f;
+}
+
+void AShipController::OnShoot()
+{
+	UWorld* world = GetWorld();
+
+	if (world) 
+	{
+		FVector location = GetActorLocation();
+		world->SpawnActor<ABulletController>(bullet_BP, location, FRotator::ZeroRotator);
+	}
 }
 
