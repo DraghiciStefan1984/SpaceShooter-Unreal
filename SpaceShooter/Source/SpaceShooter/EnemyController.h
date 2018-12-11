@@ -3,19 +3,18 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Runtime/Engine/Classes/Components/BoxComponent.h"
 #include "GameFramework/Actor.h"
-#include "EnemyController.h"
-#include "BulletController.generated.h"
+#include "Runtime/Engine/Classes/Components/BoxComponent.h"
+#include "EnemyController.generated.h"
 
 UCLASS()
-class SPACESHOOTER_API ABulletController : public AActor
+class SPACESHOOTER_API AEnemyController : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	ABulletController();
+	AEnemyController();
 
 protected:
 	// Called when the game starts or when spawned
@@ -29,8 +28,5 @@ public:
 	UShapeComponent* rootBox;
 
 	UPROPERTY(EditAnywhere)
-	float speed = 500.0f;
-
-	UFUNCTION()
-	void OnOverlap(UPrimitiveComponent* overlapComponent, AActor* otherActor, UPrimitiveComponent* otherComponent, int32 otherBodyIndex, bool bFromSweep, const FHitResult& sweepResult);
+	float speed = -200.0f;
 };

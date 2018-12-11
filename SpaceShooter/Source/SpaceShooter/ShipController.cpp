@@ -1,14 +1,18 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "ShipController.h"
+#include "EnemyController.h"
 #include "Runtime/Engine/Classes/Components/BoxComponent.h"
 #include "Runtime/Engine/Classes/Components/InputComponent.h"
+#include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
 // Sets default values
 AShipController::AShipController()
 {
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	collisionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("Root"));
+	collisionBox->SetGenerateOverlapEvents(true);
+	collisionBox->OnComponentBeginOverlap.AddDynamic(this, &AShipController::OnOverlap);
 	AutoPossessPlayer = EAutoReceiveInput::Player0;
 }
 
@@ -57,6 +61,16 @@ void AShipController::OnShoot()
 	{
 		FVector location = GetActorLocation();
 		world->SpawnActor<ABulletController>(bullet_BP, location, FRotator::ZeroRotator);
+	}
+}
+
+void AShipController::OnOverlap(UPrimitiveComponent * overlapComponent, AActor * otherActor, UPrimitiveComponent * otherComponent, int32 otherBodyIndex, bool bFromSweep, const FHitResult & sweepResult)
+{
+	if (otherActor->IsA(AEnemyController::StaticClass()))
+	{
+		died = true;
+		this->SetActorHiddenInGame(true);
+		UGameplayStatics::SetGamePaused(GetWorld(), true);
 	}
 }
 
