@@ -40,6 +40,7 @@ void ABulletController::OnOverlap(UPrimitiveComponent * overlapComponent, AActor
 	{ 
 		otherActor->Destroy();
 		this->Destroy();
+		((ASpaceShooterGameMode*)GetWorld()->GetAuthGameMode())->IncrementScore();
 	}
 }
 

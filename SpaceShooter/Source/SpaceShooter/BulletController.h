@@ -6,6 +6,7 @@
 #include "Runtime/Engine/Classes/Components/BoxComponent.h"
 #include "GameFramework/Actor.h"
 #include "EnemyController.h"
+#include "SpaceShooterGameMode.h"
 #include "BulletController.generated.h"
 
 UCLASS()

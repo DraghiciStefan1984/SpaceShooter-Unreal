@@ -7,6 +7,7 @@
 #include "EnemyController.h"
 #include "Runtime/Engine/Classes/GameFramework/DefaultPawn.h"
 #include "Runtime/CoreUObject/Public/Templates/Casts.h"
+#include "SpaceShooterGameMode.h"
 #include "ShipController.generated.h"
 
 UCLASS()
@@ -44,6 +45,7 @@ public:
 	void MoveX(float axisValue);
 	void MoveY(float axisValue);
 	void OnShoot();
+	void OnRestart();
 
 	UFUNCTION()
 	void OnOverlap(UPrimitiveComponent* overlapComponent, AActor* otherActor, UPrimitiveComponent* otherComponent, int32 otherBodyIndex, bool bFromSweep, const FHitResult& sweepResult);

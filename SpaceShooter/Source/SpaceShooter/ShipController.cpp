@@ -41,6 +41,7 @@ void AShipController::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 	PlayerInputComponent->BindAxis("MoveX", this, &AShipController::MoveX); 
 	PlayerInputComponent->BindAxis("MoveY", this, &AShipController::MoveY);
 	PlayerInputComponent->BindAction("Shoot", IE_Pressed, this, &AShipController::OnShoot);
+	PlayerInputComponent->BindAction("Restart", IE_Pressed, this, &AShipController::OnRestart).bExecuteWhenPaused = true;
 }
 
 void AShipController::MoveX(float axisValue)
@@ -64,12 +65,21 @@ void AShipController::OnShoot()
 	}
 }
 
+void AShipController::OnRestart()
+{
+	if (died)
+	{
+		UGameplayStatics::OpenLevel(this, FName(*GetWorld()->GetName()), false);
+	}
+}
+
 void AShipController::OnOverlap(UPrimitiveComponent * overlapComponent, AActor * otherActor, UPrimitiveComponent * otherComponent, int32 otherBodyIndex, bool bFromSweep, const FHitResult & sweepResult)
 {
 	if (otherActor->IsA(AEnemyController::StaticClass()))
 	{
 		died = true;
 		this->SetActorHiddenInGame(true);
+		((ASpaceShooterGameMode*)GetWorld()->GetAuthGameMode())->OnGameOver();
 		UGameplayStatics::SetGamePaused(GetWorld(), true);
 	}
 }
